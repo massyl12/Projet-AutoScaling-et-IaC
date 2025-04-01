@@ -1,52 +1,21 @@
-# ───────────────
-# Node.js backend
-# ───────────────
+# Node.js
 node_modules/
-npm-debug.log*
 .env
-.env.local
-*.log
+npm-debug.log*
 
-# ───────────────
-# React frontend
-# ───────────────
+# React
 build/
 dist/
 .cache/
-*.local
-*.env.development
-*.env.production
 
-# ───────────────
 # Docker
-# ───────────────
-*.pid
 *.tar
-docker-compose.override.yml
+*.pid
 
-# ───────────────
-# Kubernetes
-# ───────────────
-*.yaml~         # fichiers temporaires
-*.log
-*.bak
-*.tmp
-
-# ───────────────
-# VSCode / IDEs
-# ───────────────
+# IDE / OS
 .vscode/
-.idea/
-*.swp
-
-# ───────────────
-# OS files
-# ───────────────
 .DS_Store
-Thumbs.db
 
-# ───────────────
-# Test / coverage
-# ───────────────
-coverage/
-__pycache__/
+# Kubernetes
+*.log
+*.yaml~
