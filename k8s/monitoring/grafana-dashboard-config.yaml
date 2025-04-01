@@ -1,0 +1,153 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-config
+  labels:
+    grafana_dashboard: "1"
+data:
+  nodejs-dashboard.json: |
+    {
+      "id": null,
+      "title": "Node.js App Monitoring",
+      "timezone": "browser",
+      "schemaVersion": 38,
+      "version": 1,
+      "refresh": "5s",
+      "panels": [
+        {
+          "type": "graph",
+          "title": "HTTP Requests Total",
+          "targets": [
+            {
+              "expr": "http_requests_total",
+              "legendFormat": "{{method}} {{route}} ({{status}})",
+              "refId": "A"
+            }
+          ],
+          "gridPos": { "x": 0, "y": 0, "w": 12, "h": 6 }
+        },
+        {
+          "type": "graph",
+          "title": "Request Duration (Avg)",
+          "targets": [
+            {
+              "expr": "rate(http_request_duration_seconds_sum[1m]) / rate(http_request_duration_seconds_count[1m])",
+              "legendFormat": "{{method}} {{route}} ({{status}})",
+              "refId": "B"
+            }
+          ],
+          "gridPos": { "x": 12, "y": 0, "w": 12, "h": 6 }
+        },
+        
+        {
+          "type": "graph",
+          "title": "Memory Usage",
+          "targets": [
+            {
+              "expr": "process_resident_memory_bytes",
+              "legendFormat": "Resident Memory",
+              "refId": "E"
+            },
+            {
+              "expr": "process_heap_bytes",
+              "legendFormat": "Heap Size",
+              "refId": "F"
+            },
+            {
+              "expr": "nodejs_heap_size_used_bytes",
+              "legendFormat": "Heap Used",
+              "refId": "G"
+            }
+          ],
+          "gridPos": { "x": 12, "y": 6, "w": 12, "h": 6 }
+        },
+        {
+          "type": "graph",
+          "title": "CPU Usage",
+          "targets": [
+            {
+              "expr": "rate(process_cpu_user_seconds_total[1m])",
+              "legendFormat": "User CPU",
+              "refId": "H"
+            },
+            {
+              "expr": "rate(process_cpu_system_seconds_total[1m])",
+              "legendFormat": "System CPU",
+              "refId": "I"
+            }
+          ],
+          "gridPos": { "x": 0, "y": 12, "w": 12, "h": 6 }
+        },
+        {
+          "type": "graph",
+          "title": "Event Loop Lag",
+          "targets": [
+            {
+              "expr": "nodejs_eventloop_lag_seconds",
+              "legendFormat": "Current Lag",
+              "refId": "J"
+            },
+            {
+              "expr": "nodejs_eventloop_lag_p99_seconds",
+              "legendFormat": "P99 Lag",
+              "refId": "K"
+            }
+          ],
+          "gridPos": { "x": 12, "y": 12, "w": 12, "h": 6 }
+        },
+        {
+          "type": "graph",
+          "title": "Active Resources",
+          "targets": [
+            {
+              "expr": "nodejs_active_resources_total",
+              "legendFormat": "Total Resources",
+              "refId": "L"
+            },
+            {
+              "expr": "nodejs_active_handles_total",
+              "legendFormat": "Total Handles",
+              "refId": "M"
+            }
+          ],
+          "gridPos": { "x": 0, "y": 18, "w": 12, "h": 6 }
+        },
+        {
+          "type": "graph",
+          "title": "GC Duration",
+          "targets": [
+            {
+              "expr": "rate(nodejs_gc_duration_seconds_sum{kind=\"minor\"}[1m])",
+              "legendFormat": "Minor GC",
+              "refId": "N"
+            },
+            {
+              "expr": "rate(nodejs_gc_duration_seconds_sum{kind=\"major\"}[1m])",
+              "legendFormat": "Major GC",
+              "refId": "O"
+            }
+          ],
+          "gridPos": { "x": 12, "y": 18, "w": 12, "h": 6 }
+        },
+        {
+          "type": "table",
+          "title": "Heap Space Usage",
+          "targets": [
+            {
+              "expr": "nodejs_heap_space_size_used_bytes",
+              "format": "table",
+              "instant": true,
+              "legendFormat": "{{space}}",
+              "refId": "P"
+            }
+          ],
+          "gridPos": { "x": 0, "y": 24, "w": 24, "h": 6 }
+        }
+      ],
+      "templating": {
+        "list": []
+      },
+      "annotations": {
+        "list": []
+      }
+    }
