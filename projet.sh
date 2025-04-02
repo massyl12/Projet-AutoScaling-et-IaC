@@ -70,4 +70,3 @@ echo "Deployment completed successfully!"
 
 kubectl get pods
 kubectl get services
-kubectl port-forward service/nodejs-service 5000:3000 &
