@@ -14,18 +14,22 @@ eval $(minikube docker-env)
 # Construire les images Docker (Backend et Frontend)
 
 # Backend Node.js
-mkdir backend
+
+
+
+git clone https://github.com/arthurescriou/redis-node backend
 mv ./backend_dockerfile ./backend/Dockerfile
 cd backend
-git clone https://github.com/arthurescriou/redis-node .
 docker build -t $DOCKER_IMAGE_REDIS_NODE .
 cd ..
 
 # Frontend React
-mkdir frontend
+
+
+
+git clone https://github.com/arthurescriou/redis-react frontend
 mv ./frontend_dockerfile ./frontend/Dockerfile
 cd frontend
-git clone https://github.com/arthurescriou/redis-react .
 docker build -t $DOCKER_IMAGE_REDIS_REACT .
 cd ..
 cd k8s
