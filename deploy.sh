@@ -65,8 +65,7 @@ kubectl apply -f $K8S_PATH/monitoring/grafana-deployment.yaml
 
 # --- Déploiement de l'autoscaler (HPA) ---
 
-echo "[INFO] Déploiement du HPA (autoscaler) pour nodejs-app..."
-kubectl apply -f $K8S_PATH/hpa-nodejs.yaml
+
 
 # --- Attente que tout soit prêt ---
 
