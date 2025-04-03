@@ -9,6 +9,15 @@ K8S_PATH="./k8s"
 echo "[INFO] Démarrage de Minikube..."
 minikube start --driver=docker
 
+# Activer metrics-server si pas déjà activé
+echo "[INFO] Vérification de metrics-server..."
+if ! kubectl get deployment metrics-server -n kube-system >/dev/null 2>&1; then
+  echo "[INFO] Activation de metrics-server..."
+  minikube addons enable metrics-server
+else
+  echo "[INFO] metrics-server déjà actif"
+fi
+
 # Configurer les variables d'environnement pour Docker
 eval $(minikube docker-env)
 
@@ -54,6 +63,10 @@ echo "[INFO] Déploiement de Prometheus et Grafana..."
 kubectl apply -f $K8S_PATH/monitoring/prometheus-deployment.yaml
 kubectl apply -f $K8S_PATH/monitoring/grafana-deployment.yaml
 
+# --- Déploiement de l'autoscaler (HPA) ---
+
+echo "[INFO] Déploiement du HPA (autoscaler) pour nodejs-app..."
+kubectl apply -f $K8S_PATH/hpa-nodejs.yaml
 
 # --- Attente que tout soit prêt ---
 
@@ -75,7 +88,6 @@ echo "React Service URL: $REACT_URL"
 echo "Grafana Service URL: $GRAFANA_URL"
 echo "Prometheus Service URL: $PROMETHEUS_URL"
 
-
-
 echo "✅ Déploiement terminé avec succès !"
-echo "ℹ️  Veuillez exécuter : kubectl port-forward service/nodejs-service 5400:3000"
+echo "ℹ️  Vous pouvez accéder aux services ci-dessus via votre navigateur."
+echo "ℹ️  Pour tester en local : kubectl port-forward service/nodejs-service 5400:3000"
