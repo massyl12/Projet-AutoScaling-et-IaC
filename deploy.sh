@@ -81,6 +81,7 @@ GRAFANA_URL=$(minikube service grafana-service --url)
 PROMETHEUS_URL=$(minikube service prometheus-service --url)
 kubectl get pods
 kubectl get services
+kubectl get hda
 echo "[INFO] Récapitulatif des services déployés :"
 echo "Node.js Service URL: $NODEJS_URL"
 echo "React Service URL: $REACT_URL"
