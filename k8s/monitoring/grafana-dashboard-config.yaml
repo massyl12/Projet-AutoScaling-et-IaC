@@ -7,10 +7,12 @@ metadata:
 data:
   nodejs-redis-dashboard.json: |-
     {
+      "uid": "nodejs-redis-dashboard",
       "title": "Node.js + Redionitoring",
+      "editable": false,
       "timezone": "browser",
       "schemaVersion": 39,
-      "version": 4,
+      "version": 5,
       "refresh": "10s",
       "panels": [
         {
@@ -114,7 +116,7 @@ data:
           "title": "Redis Memory Usage",
           "targets": [{
             "expr": "label_replace(redis_memory_used_bytes, \"label\", \"Redis Memory\", \"\", \"\")",
-            "legendFormat": "{{label}}",
+            "legendFormat": "{{job}} - {{label}}",
             "refId": "J"
           }],
           "gridPos": { "x": 0, "y": 18, "w": 12, "h": 6 },
@@ -125,7 +127,7 @@ data:
           "title": "Redis Commands Rate",
           "targets": [{
             "expr": "label_replace(rate(redis_commands_processed_total[1m]), \"label\", \"Commands/s\", \"\", \"\")",
-            "legendFormat": "{{label}}",
+            "legendFormat": "{{job}} - {{label}}",
             "refId": "K"
           }],
           "gridPos": { "x": 12, "y": 18, "w": 12, "h": 6 }
@@ -136,12 +138,12 @@ data:
           "targets": [
             {
               "expr": "label_replace(rate(redis_keyspace_hits_total[1m]), \"label\", \"Hits\", \"\", \"\")",
-              "legendFormat": "{{label}}",
+              "legendFormat": "{{job}} - {{label}}",
               "refId": "L"
             },
             {
               "expr": "label_replace(rate(redis_keyspace_misses_total[1m]), \"label\", \"Misses\", \"\", \"\")",
-              "legendFormat": "{{label}}",
+              "legendFormat": "{{job}} - {{label}}",
               "refId": "M"
             }
           ],
@@ -153,7 +155,7 @@ data:
           "title": "Redis Connected Clients",
           "targets": [{
             "expr": "label_replace(redis_connected_clients, \"label\", \"Connected Clients\", \"\", \"\")",
-            "legendFormat": "{{label}}",
+            "legendFormat": "{{job}} - {{label}}",
             "refId": "N"
           }],
           "gridPos": { "x": 12, "y": 24, "w": 12, "h": 6 }
