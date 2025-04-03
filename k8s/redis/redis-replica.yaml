@@ -3,12 +3,18 @@ kind: Service
 metadata:
   name: redis-replica
 spec:
-  clusterIP: None  # Service Headless
+  clusterIP: None
   selector:
     app: redis
     role: replica
   ports:
-    - port: 6379
+    - name: redis
+      port: 6379
+      targetPort: 6379
+    - name: metrics
+      port: 9121
+      targetPort: 9121
+
 
 ---
 apiVersion: apps/v1
@@ -26,6 +32,9 @@ spec:
       labels:
         app: redis
         role: replica
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9121"
     spec:
       containers:
         - name: redis
@@ -34,3 +43,11 @@ spec:
           args: ["--replicaof", "redis-master", "6379"]
           ports:
             - containerPort: 6379
+        - name: redis-exporter
+          image: oliver006/redis_exporter:latest
+          ports:
+            - containerPort: 9121
+          env:
+            - name: REDIS_ADDR
+              value: redis://localhost:6379
+

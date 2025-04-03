@@ -13,3 +13,10 @@ data:
       - job_name: 'nodejs-app'
         static_configs:
           - targets: ['nodejs-service:3000']
+
+      - job_name: 'redis-master'
+        static_configs:
+          - targets: ['redis-master:9121']
+      - job_name: 'redis-replica'
+        static_configs:
+          - targets: ['redis-replica:9121']

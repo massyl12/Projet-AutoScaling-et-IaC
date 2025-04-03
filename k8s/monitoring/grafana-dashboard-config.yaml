@@ -5,147 +5,169 @@ metadata:
   labels:
     grafana_dashboard: "1"
 data:
-  nodejs-dashboard.json: |
+  nodejs-redis-dashboard.json: |-
     {
-      "id": null,
-      "title": "Node.js App Monitoring",
+      "title": "Node.js + Redionitoring",
       "timezone": "browser",
-      "schemaVersion": 38,
-      "version": 1,
-      "refresh": "5s",
+      "schemaVersion": 39,
+      "version": 4,
+      "refresh": "10s",
       "panels": [
         {
           "type": "graph",
-          "title": "HTTP Requests Total",
-          "targets": [
-            {
-              "expr": "http_requests_total",
-              "legendFormat": "{{method}} {{route}} ({{status}})",
-              "refId": "A"
-            }
-          ],
-          "gridPos": { "x": 0, "y": 0, "w": 12, "h": 6 }
+          "title": "HTTP Requests Rate",
+          "targets": [{
+            "expr": "rate(http_requests_total[1m])",
+            "legendFormat": "HTTP Requests",
+            "refId": "A"
+          }],
+          "gridPos": { "x": 0, "y": 0, "w": 8, "h": 6 },
+          "unit": "reqps"
         },
         {
           "type": "graph",
           "title": "Request Duration (Avg)",
-          "targets": [
-            {
-              "expr": "rate(http_request_duration_seconds_sum[1m]) / rate(http_request_duration_seconds_count[1m])",
-              "legendFormat": "{{method}} {{route}} ({{status}})",
-              "refId": "B"
-            }
-          ],
-          "gridPos": { "x": 12, "y": 0, "w": 12, "h": 6 }
+          "targets": [{
+            "expr": "sum(rate(http_request_duration_seconds_sum[1m])) / sum(rate(http_request_duration_seconds_count[1m]))",
+            "legendFormat": "Avg Duration",
+            "refId": "B"
+          }],
+          "gridPos": { "x": 8, "y": 0, "w": 8, "h": 6 },
+          "unit": "s"
         },
-        
         {
           "type": "graph",
-          "title": "Memory Usage",
+          "title": "Node.js Memory Usage",
           "targets": [
             {
-              "expr": "process_resident_memory_bytes",
-              "legendFormat": "Resident Memory",
-              "refId": "E"
+              "expr": "label_replace(process_resident_memory_bytes, \"label\", \"Resident Memory\", \"\", \"\")",
+              "legendFormat": "{{label}}",
+              "refId": "C"
             },
             {
-              "expr": "process_heap_bytes",
-              "legendFormat": "Heap Size",
-              "refId": "F"
-            },
-            {
-              "expr": "nodejs_heap_size_used_bytes",
-              "legendFormat": "Heap Used",
-              "refId": "G"
+              "expr": "label_replace(nodejs_heap_size_used_bytes, \"label\", \"Heap Used\", \"\", \"\")",
+              "legendFormat": "{{label}}",
+              "refId": "D"
             }
           ],
-          "gridPos": { "x": 12, "y": 6, "w": 12, "h": 6 }
+          "gridPos": { "x": 16, "y": 0, "w": 8, "h": 6 },
+          "unit": "bytes",
+          "decimals": 2
         },
         {
           "type": "graph",
           "title": "CPU Usage",
           "targets": [
             {
-              "expr": "rate(process_cpu_user_seconds_total[1m])",
-              "legendFormat": "User CPU",
-              "refId": "H"
+              "expr": "label_replace(100 * rate(process_cpu_user_seconds_total[1m]), \"label\", \"User CPU\", \"\", \"\")",
+              "legendFormat": "{{label}}",
+              "refId": "E"
             },
             {
-              "expr": "rate(process_cpu_system_seconds_total[1m])",
-              "legendFormat": "System CPU",
-              "refId": "I"
+              "expr": "label_replace(100 * rate(process_cpu_system_seconds_total[1m]), \"label\", \"System CPU\", \"\", \"\")",
+              "legendFormat": "{{label}}",
+              "refId": "F"
             }
           ],
-          "gridPos": { "x": 0, "y": 12, "w": 12, "h": 6 }
+          "gridPos": { "x": 0, "y": 6, "w": 8, "h": 6 },
+          "unit": "percent"
         },
         {
           "type": "graph",
           "title": "Event Loop Lag",
-          "targets": [
-            {
-              "expr": "nodejs_eventloop_lag_seconds",
-              "legendFormat": "Current Lag",
-              "refId": "J"
-            },
-            {
-              "expr": "nodejs_eventloop_lag_p99_seconds",
-              "legendFormat": "P99 Lag",
-              "refId": "K"
-            }
-          ],
-          "gridPos": { "x": 12, "y": 12, "w": 12, "h": 6 }
+          "targets": [{
+            "expr": "label_replace(nodejs_eventloop_lag_seconds * 1000, \"label\", \"Event Loop Lag\", \"\", \"\")",
+            "legendFormat": "{{label}}",
+            "refId": "G"
+          }],
+          "gridPos": { "x": 8, "y": 6, "w": 8, "h": 6 },
+          "unit": "ms"
         },
         {
-          "type": "graph",
-          "title": "Active Resources",
-          "targets": [
-            {
-              "expr": "nodejs_active_resources_total",
-              "legendFormat": "Total Resources",
-              "refId": "L"
-            },
-            {
-              "expr": "nodejs_active_handles_total",
-              "legendFormat": "Total Handles",
-              "refId": "M"
-            }
-          ],
-          "gridPos": { "x": 0, "y": 18, "w": 12, "h": 6 }
-        },
-        {
-          "type": "graph",
-          "title": "GC Duration",
-          "targets": [
-            {
-              "expr": "rate(nodejs_gc_duration_seconds_sum{kind=\"minor\"}[1m])",
-              "legendFormat": "Minor GC",
-              "refId": "N"
-            },
-            {
-              "expr": "rate(nodejs_gc_duration_seconds_sum{kind=\"major\"}[1m])",
-              "legendFormat": "Major GC",
-              "refId": "O"
-            }
-          ],
-          "gridPos": { "x": 12, "y": 18, "w": 12, "h": 6 }
+          "type": "stat",
+          "title": "Active Handles",
+          "targets": [{
+            "expr": "label_replace(nodejs_active_handles, \"label\", \"Handles\", \"\", \"\")",
+            "legendFormat": "{{label}}",
+            "refId": "H"
+          }],
+          "gridPos": { "x": 16, "y": 6, "w": 8, "h": 6 }
         },
         {
           "type": "table",
           "title": "Heap Space Usage",
+          "targets": [{
+            "expr": "label_replace(nodejs_heap_space_size_used_bytes, \"label\", \"Heap Space\", \"\", \"\")",
+            "instant": true,
+            "format": "table",
+            "legendFormat": "{{label}}",
+            "refId": "I"
+          }],
+          "gridPos": { "x": 0, "y": 12, "w": 24, "h": 6 },
+          "columns": [
+            { "text": "Space", "value": "space" },
+            { "text": "Used", "value": "Value" }
+          ]
+        },
+        {
+          "type": "graph",
+          "title": "Redis Memory Usage",
+          "targets": [{
+            "expr": "label_replace(redis_memory_used_bytes, \"label\", \"Redis Memory\", \"\", \"\")",
+            "legendFormat": "{{label}}",
+            "refId": "J"
+          }],
+          "gridPos": { "x": 0, "y": 18, "w": 12, "h": 6 },
+          "unit": "bytes"
+        },
+        {
+          "type": "graph",
+          "title": "Redis Commands Rate",
+          "targets": [{
+            "expr": "label_replace(rate(redis_commands_processed_total[1m]), \"label\", \"Commands/s\", \"\", \"\")",
+            "legendFormat": "{{label}}",
+            "refId": "K"
+          }],
+          "gridPos": { "x": 12, "y": 18, "w": 12, "h": 6 }
+        },
+        {
+          "type": "graph",
+          "title": "Redis Cache Efficiency",
           "targets": [
             {
-              "expr": "nodejs_heap_space_size_used_bytes",
-              "format": "table",
-              "instant": true,
-              "legendFormat": "{{space}}",
-              "refId": "P"
+              "expr": "label_replace(rate(redis_keyspace_hits_total[1m]), \"label\", \"Hits\", \"\", \"\")",
+              "legendFormat": "{{label}}",
+              "refId": "L"
+            },
+            {
+              "expr": "label_replace(rate(redis_keyspace_misses_total[1m]), \"label\", \"Misses\", \"\", \"\")",
+              "legendFormat": "{{label}}",
+              "refId": "M"
             }
           ],
-          "gridPos": { "x": 0, "y": 24, "w": 24, "h": 6 }
+          "gridPos": { "x": 0, "y": 24, "w": 12, "h": 6 },
+          "unit": "reqps"
+        },
+        {
+          "type": "gauge",
+          "title": "Redis Connected Clients",
+          "targets": [{
+            "expr": "label_replace(redis_connected_clients, \"label\", \"Connected Clients\", \"\", \"\")",
+            "legendFormat": "{{label}}",
+            "refId": "N"
+          }],
+          "gridPos": { "x": 12, "y": 24, "w": 12, "h": 6 }
         }
       ],
       "templating": {
-        "list": []
+        "list": [
+          {
+            "name": "instance",
+            "query": "label_values(up, instance)",
+            "refresh": 1,
+            "type": "query"
+          }
+        ]
       },
       "annotations": {
         "list": []
