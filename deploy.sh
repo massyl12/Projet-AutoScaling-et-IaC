@@ -36,7 +36,7 @@ kubectl apply -f $K8S_PATH/monitoring/prometheus-pvc.yaml
 kubectl apply -f $K8S_PATH/monitoring/grafana-pvc.yaml
 
 echo "[INFO] Déploiement des ConfigMaps..."
-kubectl apply -f $K8S_PATH/monitoring/prometheus-config.yaml
+kubectl apply -f $K8S_PATH/monitoring/prometheus-configmap.yaml
 kubectl apply -f $K8S_PATH/monitoring/grafana-dashboard-config.yaml
 kubectl apply -f $K8S_PATH/monitoring/grafana-dashboard-provider.yaml
 
@@ -53,8 +53,7 @@ kubectl apply -f $K8S_PATH/react
 echo "[INFO] Déploiement de Prometheus et Grafana..."
 kubectl apply -f $K8S_PATH/monitoring/prometheus-deployment.yaml
 kubectl apply -f $K8S_PATH/monitoring/grafana-deployment.yaml
-kubectl apply -f $K8S_PATH/monitoring/prometheus-service.yaml
-kubectl apply -f $K8S_PATH/monitoring/grafana-service.yaml
+
 
 # --- Attente que tout soit prêt ---
 
