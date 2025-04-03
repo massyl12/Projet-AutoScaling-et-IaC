@@ -69,4 +69,4 @@ echo "Prometheus Service URL: $PROMETHEUS_URL"
 echo "Deployment completed successfully!"
 
 
-
+echo "veuillez executer la commande suivante :  kubectl port-forward service/nodejs-service 5400:3000   "
