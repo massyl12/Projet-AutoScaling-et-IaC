@@ -12,7 +12,6 @@ spec:
       targetPort: 3000
       nodePort: 30080
 
-
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -39,3 +38,8 @@ spec:
               value: redis://redis-master:6379
             - name: REDIS_REPLICAS_URL
               value: redis://redis-replica:6379
+          resources:
+            requests:
+              cpu: 100m
+            limits:
+              cpu: 500m
