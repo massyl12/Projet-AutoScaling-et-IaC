@@ -67,15 +67,15 @@ NODEJS_URL=$(minikube service nodejs-service --url)
 REACT_URL=$(minikube service react-service --url)
 GRAFANA_URL=$(minikube service grafana-service --url)
 PROMETHEUS_URL=$(minikube service prometheus-service --url)
-
+kubectl get pods
+kubectl get services
 echo "[INFO] Récapitulatif des services déployés :"
 echo "Node.js Service URL: $NODEJS_URL"
 echo "React Service URL: $REACT_URL"
 echo "Grafana Service URL: $GRAFANA_URL"
 echo "Prometheus Service URL: $PROMETHEUS_URL"
 
-kubectl get pods
-kubectl get services
+
 
 echo "✅ Déploiement terminé avec succès !"
 echo "ℹ️  Veuillez exécuter : kubectl port-forward service/nodejs-service 5400:3000"
