@@ -8,7 +8,7 @@ data:
   nodejs-redis-dashboard.json: |-
     {
       "uid": "nodejs-redis-dashboard",
-      "title": "Node.js + Redionitoring",
+      "title": "Node.js + Redis Monitoring",
       "editable": false,
       "timezone": "browser",
       "schemaVersion": 39,
