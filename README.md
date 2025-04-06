@@ -29,11 +29,11 @@ Le fichier `deploy.sh` permet d'automatiser le déploiement de l'ensemble de l'i
 
 2. **Rendez le script exécutable** : 
    Avant d'exécuter le script, vous devez le rendre exécutable. Pour ce faire, ouvrez un terminal dans le répertoire contenant `deploy.sh` et entrez la commande suivante :
-   chmod +x deploy.sh
+   `chmod +x deploy.sh`
 
 3. **Executez le script**:
     Vous pouvez dès à présent executer le script avec la commande:
-    ./deploy.sh
+    `./deploy.sh`
 
 4. **Exposer le port localement**
     Une fois le script executé, il faut rediriger le port de Kubernetes vers la machine local. Il faut donc executer la commande suivante:
@@ -50,8 +50,8 @@ De même, nous avons céer un script d'arrêt de l'infrastructure appelé `stop.
 
 1. **Rendez le script exécutable** : 
    Avant d'exécuter le script, vous devez le rendre exécutable. Pour ce faire, ouvrez un terminal dans le répertoire contenant `stop.sh` et entrez la commande suivante :
-   chmod +x stop.sh
+   `chmod +x stop.sh`
 
 2. **Executez le script**:
     Vous pouvez dès à présent executer le script avec la commande:
-    ./stop.sh
+    `./stop.sh`
