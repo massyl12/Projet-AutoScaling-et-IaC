@@ -20,7 +20,7 @@ Le projet est organisé en plusieurs répertoires et fichiers :
 - **deploy.sh** : Script d'automatisation permettant de déployer l'infrastructure.
 - **README.md** : Documentation du projet.
 
-## Exécution du Script d'Automatisation
+## Exécution du Script de deploiement de l'architecture
 
 Le fichier `deploy.sh` permet d'automatiser le déploiement de l'ensemble de l'infrastructure. Pour l'exécuter, suivez les étapes ci-dessous :
 
@@ -44,3 +44,14 @@ Le fichier `deploy.sh` permet d'automatiser le déploiement de l'ensemble de l'i
 
 6. **Accès au Dashboard grafana**
     Dans Grafana, pour accéder au dashboard de monitoring de l'application Node.js, déroulez le menu situé en haut à gauche, cliquez sur "Dashboards", puis sélectionnez "Node.js App Monitoring"
+
+## Execution du script d'arrêt
+De même, nous avons céer un script d'arrêt de l'infrastructure appelé `stop.sh`. Ce dernier permet de stopper tout les deploiements mis en place via le fichier `deploy.sh`. Pour l'exécuter suivez les étapes ci-dessous:
+
+1. **Rendez le script exécutable** : 
+   Avant d'exécuter le script, vous devez le rendre exécutable. Pour ce faire, ouvrez un terminal dans le répertoire contenant `stop.sh` et entrez la commande suivante :
+   chmod +x stop.sh
+
+2. **Executez le script**:
+    Vous pouvez dès à présent executer le script avec la commande:
+    ./stop.sh
