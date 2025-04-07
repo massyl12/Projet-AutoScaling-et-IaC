@@ -77,10 +77,10 @@ OS_TYPE="$(uname -s)"
 
 if [[ "$OS_TYPE" == "Darwin" ]]; then
   echo "[INFO] Système macOS détecté. Ouverture des services dans des fenêtres Terminal..."
-  osascript -e "tell application \"Terminal\" to do script \"echo 'Node.js Service'; echo $NODEJS_URL; curl $NODEJS_URL; bash\""
-  osascript -e "tell application \"Terminal\" to do script \"echo 'React Service'; echo $REACT_URL; curl $REACT_URL; bash\""
-  osascript -e "tell application \"Terminal\" to do script \"echo 'Grafana'; echo $GRAFANA_URL; curl $GRAFANA_URL; bash\""
-  osascript -e "tell application \"Terminal\" to do script \"echo 'Prometheus'; echo $PROMETHEUS_URL; curl $PROMETHEUS_URL; bash\""
+  osascript -e "tell application \"Terminal\" to do script \"echo 'Node.js Service';NODEJS_URL=$(minikube service nodejs-service --url); curl $NODEJS_URL; bash\""
+  osascript -e "tell application \"Terminal\" to do script \"echo 'React Service'; REACT_URL=$(minikube service react-service --url); curl $REACT_URL; bash\""
+  osascript -e "tell application \"Terminal\" to do script \"echo 'Grafana'; GRAFANA_URL=$(minikube service grafana-service --url); curl $GRAFANA_URL; bash\""
+  osascript -e "tell application \"Terminal\" to do script \"echo 'Prometheus';PROMETHEUS_URL=$(minikube service prometheus-service --url); curl $PROMETHEUS_URL; bash\""
 fi
 
 echo "[INFO] Récupération des URLs des services..."
