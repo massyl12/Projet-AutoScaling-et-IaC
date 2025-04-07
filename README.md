@@ -55,3 +55,9 @@ De même, nous avons céer un script d'arrêt de l'infrastructure appelé `stop.
 2. **Executez le script**:
     Vous pouvez dès à présent executer le script avec la commande:
     `./stop.sh`
+
+## Potentiels bugs
+Si vous avez une erreur de permission via minikube, executez les commandes suivantes:
+`sudo chown -R $USER $HOME/.minikube`
+`chmod -R u+wrx $HOME/.minikube`
+
