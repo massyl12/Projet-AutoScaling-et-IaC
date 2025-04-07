@@ -74,13 +74,13 @@ kubectl wait --for=condition=Ready pod --all --timeout=90s
 # --- Affichage des URL des services ---
 
 OS_TYPE="$(uname -s)"
-
 if [[ "$OS_TYPE" == "Darwin" ]]; then
   echo "[INFO] Système macOS détecté. Ouverture des services dans des fenêtres Terminal..."
-  osascript -e "tell application \"Terminal\" to do script \"echo 'Node.js Service';NODEJS_URL=$(minikube service nodejs-service --url); curl $NODEJS_URL; bash\""
-  osascript -e "tell application \"Terminal\" to do script \"echo 'React Service'; REACT_URL=$(minikube service react-service --url); curl $REACT_URL; bash\""
-  osascript -e "tell application \"Terminal\" to do script \"echo 'Grafana'; GRAFANA_URL=$(minikube service grafana-service --url); curl $GRAFANA_URL; bash\""
-  osascript -e "tell application \"Terminal\" to do script \"echo 'Prometheus';PROMETHEUS_URL=$(minikube service prometheus-service --url); curl $PROMETHEUS_URL; bash\""
+
+  osascript -e 'tell application "Terminal" to do script "echo Node.js Service; curl $(minikube service nodejs-service --url); bash"'
+  osascript -e 'tell application "Terminal" to do script "echo React Service; curl $(minikube service react-service --url); bash"'
+  osascript -e 'tell application "Terminal" to do script "echo Grafana; curl $(minikube service grafana-service --url); bash"'
+  osascript -e 'tell application "Terminal" to do script "echo Prometheus; curl $(minikube service prometheus-service --url); bash"'
 fi
 
 echo "[INFO] Récupération des URLs des services..."
