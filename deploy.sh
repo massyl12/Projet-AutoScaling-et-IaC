@@ -75,13 +75,14 @@ kubectl wait --for=condition=Ready pod --all --timeout=90s
 
 OS_TYPE="$(uname -s)"
 if [[ "$OS_TYPE" == "Darwin" ]]; then
+  kubectl get all
   echo "[INFO] Système macOS détecté. Ouverture des services dans des fenêtres Terminal..."
 
-  osascript -e 'tell application "Terminal" to do script "echo Node.js Service; curl $(minikube service nodejs-service --url); bash"'
-  osascript -e 'tell application "Terminal" to do script "echo React Service; curl $(minikube service react-service --url); bash"'
-  osascript -e 'tell application "Terminal" to do script "echo Grafana; curl $(minikube service grafana-service --url); bash"'
-  osascript -e 'tell application "Terminal" to do script "echo Prometheus; curl $(minikube service prometheus-service --url); bash"'
-fi
+  osascript -e 'tell application "Terminal" to do script "echo Node.js Service; (minikube service nodejs-service --url); bash"'
+  osascript -e 'tell application "Terminal" to do script "echo React Service; (minikube service react-service --url); bash"'
+  osascript -e 'tell application "Terminal" to do script "echo Grafana; (minikube service grafana-service --url); bash"'
+  osascript -e 'tell application "Terminal" to do script "echo Prometheus; (minikube service prometheus-service --url); bash"'
+else
 
 echo "[INFO] Récupération des URLs des services..."
 NODEJS_URL=$(minikube service nodejs-service --url)
@@ -96,7 +97,7 @@ echo "Node.js Service URL: $NODEJS_URL"
 echo "React Service URL: $REACT_URL"
 echo "Grafana Service URL: $GRAFANA_URL"
 echo "Prometheus Service URL: $PROMETHEUS_URL"
-
+fi
 # --- Ouverture automatique des URLs sur macOS uniquement ---
 
 
