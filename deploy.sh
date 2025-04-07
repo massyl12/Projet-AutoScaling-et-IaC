@@ -64,8 +64,7 @@ kubectl apply -f $K8S_PATH/monitoring/prometheus-deployment.yaml
 kubectl apply -f $K8S_PATH/monitoring/grafana-deployment.yaml
 
 # --- Déploiement de l'autoscaler (HPA) ---
-
-
+# (ajoute ici si besoin)
 
 # --- Attente que tout soit prêt ---
 
@@ -74,17 +73,32 @@ kubectl wait --for=condition=Ready pod --all --timeout=90s
 
 # --- Affichage des URL des services ---
 
+OS_TYPE="$(uname -s)"
+
+if [[ "$OS_TYPE" == "Darwin" ]]; then
+  echo "[INFO] Système macOS détecté. Ouverture des services dans des fenêtres Terminal..."
+  osascript -e "tell application \"Terminal\" to do script \"echo 'Node.js Service'; echo $NODEJS_URL; curl $NODEJS_URL; bash\""
+  osascript -e "tell application \"Terminal\" to do script \"echo 'React Service'; echo $REACT_URL; curl $REACT_URL; bash\""
+  osascript -e "tell application \"Terminal\" to do script \"echo 'Grafana'; echo $GRAFANA_URL; curl $GRAFANA_URL; bash\""
+  osascript -e "tell application \"Terminal\" to do script \"echo 'Prometheus'; echo $PROMETHEUS_URL; curl $PROMETHEUS_URL; bash\""
+fi
+
 echo "[INFO] Récupération des URLs des services..."
 NODEJS_URL=$(minikube service nodejs-service --url)
 REACT_URL=$(minikube service react-service --url)
 GRAFANA_URL=$(minikube service grafana-service --url)
 PROMETHEUS_URL=$(minikube service prometheus-service --url)
+
 kubectl get all
+
 echo "[INFO] Récapitulatif des services déployés :"
 echo "Node.js Service URL: $NODEJS_URL"
 echo "React Service URL: $REACT_URL"
 echo "Grafana Service URL: $GRAFANA_URL"
 echo "Prometheus Service URL: $PROMETHEUS_URL"
+
+# --- Ouverture automatique des URLs sur macOS uniquement ---
+
 
 echo "✅ Déploiement terminé avec succès !"
 echo "ℹ️  Vous pouvez accéder aux services ci-dessus via votre navigateur."
